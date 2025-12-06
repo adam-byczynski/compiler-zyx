@@ -1,0 +1,42 @@
+# This program checks if given number is a prime number
+
+print("1. Prime number example.");
+print("Checking if 1237 is a prime number...");
+
+int number = 1237;
+int i = 2;
+bool isPrime = True;
+
+while(i * i < number / 2) {
+    if(number % i == 0) {
+        isPrime = False;
+    }
+    i = i + 1;
+}
+
+if(isPrime  == True) {
+    print("Given number is prime.");
+} else {
+    print("Given number is not prime.");
+}
+
+
+print("2. Not-prime number example.");
+print("Checking if 68 is a prime number...");
+
+int number2 = 68;
+int j = 2;
+bool isPrime2 = True;
+
+while(j * j < number2 / 2) {
+    if(number2 % j == 0) {
+        isPrime2 = False;
+    }
+    j = j + 1;
+}
+
+if(isPrime2  == True) {
+    print("Given number is prime.");
+} else {
+    print("Given number is not prime.");
+}

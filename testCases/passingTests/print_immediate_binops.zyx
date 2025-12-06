@@ -1,0 +1,13 @@
+# Prints of simple binops
+
+print("Addition:");
+print(2+2);
+
+print("Subtraction:");
+print(6-1);
+
+print("Multiplication:");
+print(3*3);
+
+print("Division:");
+print(4/2);

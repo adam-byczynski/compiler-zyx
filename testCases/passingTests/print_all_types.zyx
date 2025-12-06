@@ -1,0 +1,4 @@
+print(2);
+print(5.4);
+print("TEST");
+print(False);

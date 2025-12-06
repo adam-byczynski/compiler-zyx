@@ -1,0 +1,2 @@
+string text = "This is text";
+print(text);

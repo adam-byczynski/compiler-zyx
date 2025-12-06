@@ -1,0 +1,4 @@
+# Division by Zero
+
+# Compilation should stop and next statement
+int i = 20 / 0;

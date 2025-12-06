@@ -1,0 +1,14 @@
+# Simple IF test
+
+int a = 5;
+print("Value before: ");
+print(a);
+
+print("Condition: a < 6");
+if(a<6) {
+    a = a + 1;
+} else {
+    a = a-1;
+}
+print("Value after: ");
+print(a);

@@ -1,0 +1,9 @@
+int num = 2;
+string str = "hello";
+float val = 5.2;
+bool name = True;
+
+num = 3;
+val = 6.3;
+str = "world";
+name = False;

@@ -1,0 +1,3 @@
+# Int variable gets non-int value
+
+int num = "Incorrect value";

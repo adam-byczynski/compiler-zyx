@@ -1,0 +1,12 @@
+**/.DS_Store
+**/._.DS_Store
+.DS_Store
+._.DS_Store
+.idea/
+build-test-suite/
+build/
+non-project-playground/
+testCases/**/*.log
+testCases/**/*_exec
+testCases/other
+todo.txt

@@ -1,0 +1,50 @@
+# -------------------------
+# macOS Configuration
+# -------------------------
+CXXFLAGS := -std=c++20 -Wall -Wextra -pedantic -O2 -g -stdlib=libc++ -arch arm64
+CXX := clang++
+LLVM_CXXFLAGS := $(shell llvm-config --cxxflags)
+LLVM_LDFLAGS := $(shell llvm-config --ldflags --system-libs --libs all)
+CXXFLAGS += $(LLVM_CXXFLAGS)
+
+SRC_DIR := src
+BUILD_DIR := build
+TEST_RUNS_DIR := build-test-suite
+
+# Find all .cpp files in src/ directory
+SRCS_FILES := $(shell find $(SRC_DIR) -name '*.cpp')
+
+# Create list of all compiled object files from all source files
+OBJS_FILES := $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SRCS_FILES))
+
+TARGET_NAME := zyx
+OUTPUT_EXECUTABLE := $(BUILD_DIR)/$(TARGET_NAME)
+
+# -------------------------
+# Targets
+# -------------------------
+all: $(OUTPUT_EXECUTABLE)
+
+$(OUTPUT_EXECUTABLE): $(OBJS_FILES)
+	@mkdir -p $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LLVM_LDFLAGS)
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	rm -rf $(BUILD_DIR)
+
+clean-tests:
+	rm -rf $(TEST_RUNS_DIR)
+
+run-tests: all clean-tests
+	./support_scripts/run_tests.sh
+
+list:
+	@echo "Available build targets:"
+	@grep -E '^[a-zA-Z0-9_-]+:' Makefile | grep -vE '^\.' | sed 's/:.*//'
+	@echo "Check makefile for more information"
+
+.PHONY: all clean clean-tests run-tests list

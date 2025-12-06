@@ -1,0 +1,21 @@
+# Print test
+# Supported Functionalities:
+# - printing content of the variable => int, float, string
+# - printing the immediate value of a type => int, float, string
+# - print does not support resolving of values within print brackets
+
+print("Printing int: ");
+int value = 1235;
+print(value);
+
+print("Printing float: ");
+float number = 23.5;
+print(number);
+
+print("Printing string: ");
+string text = "This is text";
+print(text);
+
+print("Printing bool: ");
+bool check = True;
+print(check);

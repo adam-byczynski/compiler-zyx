@@ -1,0 +1,24 @@
+# Simple integer binop
+print("Printing addition of 5*2+2*3");
+int a = 5*2+2*3;
+print(a);
+
+# Simple subtraction
+print("Printing subtraction of floats 231.23 - 52.54");
+float d = 231.23 - 52.54;
+print(d);
+
+# Simple float binop
+print("Printing multiplication of 1.3 * 2.4");
+float b = 1.3 * 2.4;
+print(b);
+
+# Simple division
+print("Printing division of int and float 13 / 2.5");
+float c = 13/2.5;
+print(c);
+
+bool e = True;
+bool f = False;
+print(e == f);
+

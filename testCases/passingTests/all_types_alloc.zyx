@@ -1,0 +1,4 @@
+int number = 5;
+string text = "This is text";
+float value = 3.14;
+bool check = True;

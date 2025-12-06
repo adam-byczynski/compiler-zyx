@@ -1,0 +1,17 @@
+int counter = 1;
+int count = 0;
+
+int number_to_count = 1;
+
+while (counter < 13) {
+    int temp = counter;
+    while (temp > 0) {
+        if (temp % 10 == number_to_count) {
+            count = count + 1;
+        }
+        temp = temp / 10;
+    }
+    counter = counter + 1;
+}
+print("Number of occurrences:");
+print(count);

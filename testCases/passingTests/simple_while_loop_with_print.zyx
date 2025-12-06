@@ -1,0 +1,10 @@
+# Simple while loop with print
+
+int times = 5;
+print("The loop will run 5 times.");
+
+while(times > 0) {
+    print(times);
+    times = times - 1;
+}
+print("Loop finished!");

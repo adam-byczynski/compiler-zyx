@@ -1,0 +1,23 @@
+print("Printing int:");
+int a = 1;
+print(a);
+a = 5;
+print(a);
+
+print("Printing float:");
+float b = 13.233;
+print(b);
+b = 3425.2;
+print(b);
+
+print("Printing string:");
+string c = "TEXT";
+print(c);
+c = "OTHER TEXT";
+print(c);
+
+print("Printing bool:");
+bool d = True;
+print(d);
+d = False;
+print(d);

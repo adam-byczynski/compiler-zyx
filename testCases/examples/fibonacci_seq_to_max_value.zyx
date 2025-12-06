@@ -1,0 +1,12 @@
+# This program prints Fibonacci Sequence up to max provided value
+
+int a = 0;
+int b = 1;
+
+while(a < 100) {
+	print(a);
+	int temp = a;
+	a = a + b;
+	b = temp;
+}
+print("Loop has finished!");

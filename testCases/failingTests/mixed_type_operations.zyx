@@ -1,0 +1,132 @@
+# 1. Integer and Integer (int64 ⊕ int64)
+int a = 12, b = 14;
+int sum_int = a + b;  # 26
+int diff_int = a - b;  # -2
+int prod_int = a * b;  # 168
+int quot_int = a / b;  # 0 (integer division)
+
+# 2. Integer and Float (int64 ⊕ float64)
+int a = 12;
+float b = 14.5;
+float sum_int_float = a + b;  # 26.5
+float diff_int_float = a - b;  # -2.5
+float prod_int_float = a * b;  # 174.0
+float quot_int_float = a / b;  # 0.827586
+
+# 3. Float and Integer (float64 ⊕ int64)
+float a = 12.5;
+int b = 14;
+float sum_float_int = a + b;  # 26.5
+float diff_float_int = a - b;  # -1.5
+float prod_float_int = a * b;  # 175.0
+float quot_float_int = a / b;  # 0.892857
+
+# 4. Float and Float (float64 ⊕ float64)
+float a = 12.5, b = 14.5;
+float sum_float = a + b;  # 27.0
+float diff_float = a - b;  # -2.0
+float prod_float = a * b;  # 181.25
+float quot_float = a / b;  # 0.862069
+
+# 5. String and String (string ⊕ string)
+string str1 = "Hello", str2 = "World";
+string concat_str = str1 + str2;  # "HelloWorld"
+string concat_space_str = str1 + " " + str2;  # "Hello World"
+
+# 6. Integer and String (int64 ⊕ string) - Undefined operations
+int a = 12;
+string b = "World";
+string cannot_add_int_string = a + b; # Cannot perform arithmetic between int and string
+string cannot_subtract_int_string = a - b; # Cannot perform arithmetic between int and string
+string cannot_multiply_int_string = a * b; # Cannot perform arithmetic between int and string
+string cannot_divide_int_string = a / b; # Cannot perform arithmetic between int and string
+
+# 7. Float and String (float64 ⊕ string) - Undefined operations
+float a = 12.5;
+string b = "World";
+string cannot_add_float_string = a + b; # Cannot perform arithmetic between float and string
+string cannot_subtract_float_string = a - b; # Cannot perform arithmetic between float and string
+string cannot_multiply_float_string = a * b; # Cannot perform arithmetic between float and string
+string cannot_divide_float_string = a / b; # Cannot perform arithmetic between float and string
+
+# 8. String and Integer (string ⊕ int64) - Undefined operations
+string a = "Hello";
+int b = 14;
+string cannot_add_string_int = a + b; # Cannot perform arithmetic between string and int
+string cannot_subtract_string_int = a - b; # Cannot perform arithmetic between string and int
+string cannot_multiply_string_int = a * b; # Cannot perform arithmetic between string and int
+string cannot_divide_string_int = a / b; # Cannot perform arithmetic between string and int
+
+# 9. String and Float (string ⊕ float64) - Undefined operations
+string a = "Hello";
+float b = 14.5;
+string cannot_add_string_float = a + b; # Cannot perform arithmetic between string and float
+string cannot_subtract_string_float = a - b; # Cannot perform arithmetic between string and float
+string cannot_multiply_string_float = a * b; # Cannot perform arithmetic between string and float
+string cannot_divide_string_float = a / b; # Cannot perform arithmetic between string and float
+
+# 10. Mixed Type Operations (int64 ⊕ float64 ⊕ string)
+int i = 12;
+float f = 14.5;
+string s = "Result: ";
+
+# Complex mixed operation (int + float) and concatenation
+string result1 = s + (i + f);  # "Result: 26.5"
+
+# Complex mixed operation with reassignment
+string result2 = s + (i * 2) + (f / 2);  # "Result: 31.25"
+
+# Complex mixed operation (float + int) and concatenation
+string result3 = s + (f + i);  # "Result: 26.5"
+
+# Complex mixed operation with reassignment
+string result4 = s + (f * 2) + (i / 2);  # "Result: 31.25"
+
+# 11. Integer, Float and String Complex Expression with all permutations
+int i = 12;
+float f = 14.5;
+string s = "Result: ";
+
+string expr1 = s + (i + f);  # "Result: 26.5"
+expr1 = s + (i * 2) + (f / 2);  # "Result: 31.25"
+
+string expr2 = s + (i * f);  # "Result: 174.0"
+expr2 = s + (i + 2) + (f - 4.5);  # "Result: 17.0"
+
+string expr3 = s + (f - i);  # "Result: 2.5"
+expr3 = s + (i + 3) * (f - 4.5);  # "Result: 14.25"
+
+string expr4 = s + (i / f);  # "Result: 0.827586"
+expr4 = s + (i - 2) * (f + 0.5);  # "Result: 18.0"
+
+# 12. Boolean (bool) Operations
+
+# Boolean and Boolean (bool ⊕ bool)
+bool b1 = true, b2 = false;
+bool and_bool = b1 && b2;  # false (logical AND)
+bool or_bool = b1 || b2;  # true (logical OR)
+bool not_bool = !b1;  # false (logical NOT)
+
+# 13. Integer and Boolean (int64 ⊕ bool) - Undefined operations
+int a = 12;
+bool b = true;
+string cannot_add_int_bool = a + b; # Cannot perform arithmetic between int and bool
+string cannot_subtract_int_bool = a - b; # Cannot perform arithmetic between int and bool
+string cannot_multiply_int_bool = a * b; # Cannot perform arithmetic between int and bool
+string cannot_divide_int_bool = a / b; # Cannot perform arithmetic between int and bool
+
+# 14. Float and Boolean (float64 ⊕ bool) - Undefined operations
+float a = 12.5;
+bool b = true;
+string cannot_add_float_bool = a + b; # Cannot perform arithmetic between float and bool
+string cannot_subtract_float_bool = a - b; # Cannot perform arithmetic between float and bool
+string cannot_multiply_float_bool = a * b; # Cannot perform arithmetic between float and bool
+string cannot_divide_float_bool = a / b; # Cannot perform arithmetic between float and bool
+
+# 15. Boolean and String (bool ⊕ string) - Undefined operations
+bool a = true;
+string b = "Hello";
+string cannot_add_bool_string = a + b; # Cannot perform arithmetic between bool and string
+string cannot_subtract_bool_string = a - b; # Cannot perform arithmetic between bool and string
+string cannot_multiply_bool_string = a * b; # Cannot perform arithmetic between bool and string
+string cannot_divide_bool_string = a / b; # Cannot perform arithmetic between bool and string
