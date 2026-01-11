@@ -2,7 +2,7 @@
    The main method is runCompilation(), where the whole compilation process is conducted.
    Apart from that it handles parsing of command line input and other utils stuff.
 
-Copyright (C) 2025 Adam Byczyński.
+Copyright (C) 2026 Adam Byczyński.
 
 This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -21,13 +21,14 @@ This program is free software: you can redistribute it and/or modify
 
 #include "Compiler.h"
 
-#include "ExecutableGenerator/LLVM_ExecutableGenerator.h"
+#include "executableGenerator/LLVM_ExecutableGenerator.h"
 #include "IOHandling/SourceFile.h"
 #include "IRCodeGenerator/LLVM_IR_Generator.h"
-#include "Lexer/Lexer.h"
-#include "Parser/Parser.h"
-#include "SemanticAnalyzer/SemanticAnalyzer.h"
+#include "lexer/Lexer.h"
+#include "parser/Parser.h"
+#include "semanticAnalyzer/SemanticAnalyzer.h"
 
+#include <string>
 
 Compiler::Compiler(int argc, char *argv[]) {
     this->argCounter = argc;
@@ -38,48 +39,97 @@ Compiler::Compiler(int argc, char *argv[]) {
     this->parseCommandLineArguments();
     this->printCompilationOptions();
 
-    this->logger.setLoggerName(this->outputFileName + "_compilation");
-    this->logger.setInfoModeFlag(this->flagInfo);
+    logger.setLoggerName(this->outputFileName + LT_LOGGER_NAME_SUFFIX);
+    logger.setInfoModeFlag(this->flagInfo);
 };
 
 
 void Compiler::parseCommandLineArguments() {
-    if(this->argCounter <= 1) {
-        this->logger.logMessage(LogSeverity::Error, "No flags provided. Run compiler with flag "
-                                                    "--help to see syntax and supported flags.");
-    }
-
-    for (int i = 1; i < this->argCounter; ++i) {  // Start from 1 to skip the compiler program name
+    // Start from 1 to skip the compiler program name
+    for (int i = 1; i < this->argCounter; ++i) {
         std::string arg = this->argValues[i];
 
-        if (arg == "--help" || arg == "-h") {
-            this->flagHelpInfo = true;
-        } else if (arg == "--verbose" || arg == "-v") {
-            this->flagVerbose = true;
-        } else if (arg == "--info" || arg == "-i") {
-            this->flagInfo = true;
-        } else if (arg == "--linking" || arg == "-l") {
-            this->flagLinking = true;
-        } else if (arg == "--dump-logs" || arg == "-d") {
-            this->flagDumpLogs = true;
-        } else if (arg == "--source" || arg == "-s") {
-            if (i + 1 < this->argCounter) {  // Ensures there's a value after '--source' or '-s'
-                this->sourceFileName = this->argValues[++i];  // Get the source file name
+        // Parse long flags
+        if (arg.starts_with("--")) {
+            if (arg == "--help") {
+                this->flagHelpInfo = true;
+            } else if (arg == "--verbose") {
+                this->flagVerbose = true;
+            } else if (arg == "--info") {
+                this->flagInfo = true;
+            } else if (arg == "--no-link") {
+                this->flagLink = false;
+            } else if (arg == "--dump-logs") {
+                this->flagDumpLogs = true;
+            } else if (arg == "--output") {
+                if (i + 1 < this->argCounter) {
+                    this->outputFileName = this->argValues[++i];
+                } else {
+                    this->logger.logMessage(LogSeverity::Error, "flag --output requires an argument.");
+                }
             } else {
-                std::cerr << "Error: --source requires an argument.\n";
-                return;
+                this->logger.logMessage(LogSeverity::Error, "Unknown option: " + arg);
             }
-        } else if (arg == "--output" || arg == "-o") {
-            if (i + 1 < this->argCounter) {  // Ensures there's a value after '--output-name' or '-o'
-                this->outputFileName = this->argValues[++i];  // Get the output file name
-            } else {
-                std::cerr << "Error: --output-name requires an argument.\n";
-                return;
+
+        // Parse short flags
+        } else if (arg.starts_with("-")) {
+            for (size_t j = 1; j < arg.length(); ++j) {
+                char shortFlag = arg[j];
+
+                switch (shortFlag) {
+                    case 'h':
+                        this->flagHelpInfo = true;
+                        break;
+
+                    case 'v':
+                        this->flagVerbose = true;
+                        break;
+
+                    case 'i':
+                        this->flagInfo = true;
+                        break;
+
+                    case 'n':
+                        this->flagLink = false;
+                        break;
+
+                    case 'd':
+                        this->flagDumpLogs = true;
+                        break;
+
+                    case 'o':
+                        // -o requires a separate argument
+                        if (i + 1 < this->argCounter) {
+                            this->outputFileName = this->argValues[++i];
+                        } else {
+                            this->logger.logMessage(LogSeverity::Error, "-o requires an argument.");
+                        }
+                        break;
+
+                    default:
+                        this->logger.logMessage(LogSeverity::Error, "Unknown option: " + std::to_string(shortFlag)
+                        );
+                }
             }
+
         } else {
-            std::cerr << "Error: Unknown argument '" << arg << "'. Use --help for usage information.\n";
-            return;
+            this->sourceFileName = this->argValues[i];
         }
+    }
+
+    if (this->argCounter < 2 || this->flagHelpInfo) {
+        logger.logMessage(LogSeverity::Error,
+           "Basic usage: zyx [optional-arguments] <source-file>"
+           "\n"
+           "\nOptional arguments:"
+           "\n  --dump-logs, -d          Dump compilation logs to file"
+           "\n  --help, -h               Display this help message"
+           "\n  --info, -i               Enables printing standard logs to terminal."
+           "\n  --output, -o <file>      Specify output executable name"
+           "\n  --no-link, -n            By default compiler emits Mach-o executable file and uses Clang linked from $PATH. "
+           "\n                           Use this flag to disable automatic linking and get object files."
+           "\n  --verbose, -v            Enable verbose logging, both to terminal and log file."
+        );
     }
 }
 
@@ -159,7 +209,7 @@ void Compiler::runCompilation() {
 
 
     //---EMITTING-EXECUTABLE_FILE------------------------------------------------------
-    if (this->flagLinking) {
+    if (this->flagLink) {
         logger.logMessage(LogSeverity::Info,"Starting emitting executable file...");
 
         executableGenerator.generateExecutableFile(this->outputFileName);
@@ -180,43 +230,29 @@ void Compiler::runCompilation() {
 
 
 void Compiler::printCompilationOptions() {
-    if (this->flagHelpInfo) {
-        std::cout << "Basic usage: zyx -s <file> -o <file> [optional-arguments]\n"
-                  << "Mandatory arguments:\n"
-                  << "  --source, -s <file>      Specify source file\n"
-                  << "  --output, -o <file>      Specify output executable name\n"
-                  << "\n"
-                  << "Optional arguments:\n"
-                  << "  --info, -i               Enables printing standard logs to terminal.\n"
-                  << "  --link, -l               By default compiler emits object file. Use this flag to enable automatic linking using Clang linker from $PATH\n"
-                  << "  --dump-logs, -d          Dump compilation logs to file\n"
-                  << "  --verbose, -v            Enable verbose logging, both to terminal and log file.\n"
-                  << "  --help, -h               Display this help message\n";
-        exit(1);
-    }
-
-    if (!this->sourceFileName.empty()) {
+    if (!std::filesystem::exists(this->sourceFileName)) {
+        logger.logMessage(LogSeverity::Error, "Provided source file does not exist: " + this->sourceFileName);
+    } else {
         logger.logMessage(LogSeverity::Info, "Source file: " + sourceFileName);
-    } else {
-        logger.logMessage(LogSeverity::Error, "No source file provided. Use --source or -s to specify.");
     }
 
-    if (!this->outputFileName.empty()) {
-        logger.logMessage(LogSeverity::Info, "Output executable name: " + this->outputFileName);
+    if (this->outputFileName.empty()) {
+        this->outputFileName = std::filesystem::path(this->sourceFileName).replace_extension().string();
+        logger.logMessage(LogSeverity::Info, "No output name specified. Source file name will be used: " + this->outputFileName);
     } else {
-        logger.logMessage(LogSeverity::Error, "No output name provided. Use --output-name or -o to specify.");
+        logger.logMessage(LogSeverity::Info, "Output executable name: " + this->outputFileName);
     }
 
     if (this->flagInfo) {
-        logger.logMessage(LogSeverity::Info, "Info mode enabled. Standard logs will be printed to console");
+        logger.logMessage(LogSeverity::Info, "Info mode enabled. Standard logs will be printed to console.");
     } else {
         logger.logMessage(LogSeverity::Info, "Info mode disabled. No logs will be printed to console.");
     }
 
-    if (this->flagLinking) {
+    if (this->flagLink) {
         logger.logMessage(LogSeverity::Info, "Linking enabled. The object file will be linked to executable.");
     } else {
-        logger.logMessage(LogSeverity::Info, "Linking disabled.");
+        logger.logMessage(LogSeverity::Info, "Linking disabled. The executable file will not be generated.");
     }
 
     if (this->flagDumpLogs) {
@@ -231,6 +267,3 @@ void Compiler::printCompilationOptions() {
         logger.logMessage(LogSeverity::Info, "Verbose mode disabled.");
     }
 }
-
-
-

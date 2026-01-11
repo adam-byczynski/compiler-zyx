@@ -1,5 +1,5 @@
 /* Entry point to the compiler program.
-Copyright (C) 2025 Adam Byczynski.
+Copyright (C) 2026 Adam Byczynski.
 
 This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by

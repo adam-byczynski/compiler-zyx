@@ -2,7 +2,7 @@
     Header file for LLVM_ExecutableGenerator class.
 
 
-Copyright (C) 2025 Adam Byczyński.
+Copyright (C) 2026 Adam Byczyński.
 
 This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -44,7 +44,7 @@ This program is free software: you can redistribute it and/or modify
 #include "llvm/Support/TargetSelect.h"
 #include "llvm/Support/FileSystem.h"
 
-#include "../Utilities/Logger.h"
+#include "../utilities/Logger.h"
 
 
 class LLVM_ExecutableGenerator {

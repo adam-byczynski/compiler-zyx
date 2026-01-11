@@ -14,31 +14,27 @@ echo "---------------------------------------------"
 echo "Running Passing Tests"
 echo "---------------------------------------------"
 
-readonly PASSING_TEST_FILES=$(find "$TEST_PASSING_DIR" -type f -name "*.zyx")
+readonly PASSING_TEST_CASES=$(find "$TEST_PASSING_DIR" -type d -depth 1)
 COUNTER_PASSED_TESTS=0
 
-for file in $PASSING_TEST_FILES; do
-    [[ -f "$file" ]] || { printf '%s is not a file, skipping\n' "$file"; continue; }
-
+for test_case_dir in $PASSING_TEST_CASES; do
     ((COUNTER_TOTAL_TESTS++))
 
-    test_case_name=$(basename "$file" .zyx)
+    test_case_name=$(basename "$test_case_dir")
     test_build_dir="$TESTS_BUILD_DIR/passingTests/$test_case_name"
-    test_case_full_path="$test_build_dir/${test_case_name}.zyx"
-
     mkdir -p "$test_build_dir"
-    cp "$file" "$test_build_dir"
+    cp $test_case_dir/* $test_build_dir
 
-    ./support_scripts/run_compiler_for_tests.sh "$test_case_full_path" > "$test_build_dir/${test_case_name}.log" 2>&1
+    test_case_source_code="${test_build_dir}/${test_case_name}.zyx"
+    ./support_scripts/run_compiler_for_tests.sh "$test_case_source_code" &> "$test_build_dir/${test_case_name}.cli_log"
 	
-    exec_path="$test_build_dir/${test_case_name}.zyx_exec"
-
-    if [[ -f "$exec_path" ]]; then
-        output_file="$test_build_dir/${test_case_name}.out"
-        "$exec_path" > "$output_file" 2>&1
+    exec_file="$test_build_dir/${test_case_name}"
+    if [[ -x $exec_file ]]; then
+        output_file="$test_build_dir/${test_case_name}.act_out"
+        "$exec_file" > "$output_file" 2>&1
 
         actual_output="$(cat "$output_file")"
-        expected_output=$(cat "$TEST_PASSING_DIR/${test_case_name}.out")
+        expected_output=$(cat "$test_build_dir/${test_case_name}.exp_out")
 
         if [[ "$expected_output" == "$actual_output" ]]; then
             echo "[OK]  $COUNTER_TOTAL_TESTS: $test_case_name"
@@ -52,39 +48,44 @@ for file in $PASSING_TEST_FILES; do
     fi
 done
 
-
 echo "---------------------------------------------"
 echo "Running Failing Tests"
 echo "---------------------------------------------"
 
-readonly FAILING_TEST_FILES=$(find "$TEST_FAILING_DIR" -type f -name "*.zyx")
+readonly FAILING_TEST_FILES=$(find "$TEST_FAILING_DIR" -type d -depth 1)
 
-for file in $FAILING_TEST_FILES; do
-    [[ -f "$file" ]] || { printf '%s is not a file, skipping\n' "$file"; continue; }
+for test_case_dir in $FAILING_TEST_FILES; do
     ((COUNTER_TOTAL_TESTS++))
 
-    test_case_name=$(basename "$file" .zyx)
+    test_case_name=$(basename "$test_case_dir")
     test_build_dir="$TESTS_BUILD_DIR/failingTests/$test_case_name"
-    test_case_full_path="$test_build_dir/${test_case_name}.zyx"
-
     mkdir -p "$test_build_dir"
-    cp "$file" "$test_build_dir"
+    cp $test_case_dir/* $test_build_dir
 
-    ./support_scripts/run_compiler_for_tests.sh "$test_case_full_path" > "$test_build_dir/${test_case_name}.log" 2>&1
+    test_case_source_code="$test_build_dir/${test_case_name}.zyx"
+    ./support_scripts/run_compiler_for_tests.sh "$test_case_source_code" &> "$test_build_dir/${test_case_name}.cli_log"
 
-    if find "$test_build_dir" -maxdepth 1 -type f -name '*_exec' | grep -q .; then
-        echo "[ERR] $COUNTER_TOTAL_TESTS: $test_case_name => Exec file has been generated for failing test.."
+    exec_file="$test_build_dir/${test_case_name}"
+    if [[ -x $exec_file ]]; then
+        echo "[ERR] $COUNTER_TOTAL_TESTS: $test_case_name => Executable has been generated for failing test."
     else
-        echo "[OK]  $COUNTER_TOTAL_TESTS: $test_case_name"
-        ((COUNTER_PASSED_TESTS++))
+        expected_error=$(cat "$test_build_dir/${test_case_name}.exp_err")
+        # Get last line in log and cut out the timestamp part
+        actual_error=$(tail -1 "$test_build_dir/${test_case_name}.cli_log" | cut -c 29-)
+
+        if [[ "$expected_error" == "$actual_error" ]]; then
+            echo "[OK]  $COUNTER_TOTAL_TESTS: $test_case_name"
+            ((COUNTER_PASSED_TESTS++))
+        else
+            echo "[ERR] $COUNTER_TOTAL_TESTS: $test_case_name => Actual error does not match the expected error."
+        fi
     fi
 done
 
-
 echo "---------------------------------------------"
-echo "Test Summary"
+echo "Summary"
 echo "---------------------------------------------"
-echo "Total tests: $COUNTER_TOTAL_TESTS"
+echo "Total tests:  $COUNTER_TOTAL_TESTS"
 echo "Tests passed: $COUNTER_PASSED_TESTS"
 echo "Tests failed: $(($COUNTER_TOTAL_TESTS - $COUNTER_PASSED_TESTS))"
 echo "---------------------------------------------"

@@ -1,0 +1,1 @@
+[ERROR] [L:1, C:1]: Type mismatch: Cannot initialize variable "check" of type "bool" with given expression.

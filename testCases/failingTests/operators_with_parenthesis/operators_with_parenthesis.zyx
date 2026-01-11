@@ -1,0 +1,107 @@
+# Expression Operator Permutations (int64, float64, string)
+
+# 1. INTEGER OPERATIONS (int64)
+# int64 ⊕ int64 → int64
+int a = 12; print(a);    # 12
+int b = 14; print(b);    # 14
+
+int sum = a + b; print(sum);  # 26
+sum = b + a; print(sum);      # 26 (reassignment)
+
+int difference = a - b; print(difference);  # -2
+difference = b - a; print(difference);      # 2 (reassignment)
+
+int product = a * b; print(product);     # 168
+product = (a + 2) * (b - 4); print(product);  # 140 (parentheses)
+
+int quotient = b / a; print(quotient);    # 1 (integer division)
+quotient = (b + 2) / (a - 2); print(quotient);  # 1 (parentheses)
+
+# 2. FLOATING POINT OPERATIONS (float64)
+# float64 ⊕ float64 → float64
+float x = 12.5; print(x);    # 12.5
+float y = 14.2; print(y);    # 14.2
+
+float sum = x + y; print(sum);  # 26.7
+sum = (x + 1.0) + (y - 0.2); print(sum);  # 27.5 (parentheses)
+
+float difference = x - y; print(difference);  # -1.7
+difference = (y + 0.8) - (x - 0.5); print(difference);  # 3.0 (parentheses)
+
+float product = x * y; print(product);     # 177.5
+product = (x + 0.5) * (y - 0.2); print(product);  # 182.0 (parentheses)
+
+float quotient = y / x; print(quotient);    # 1.136
+quotient = (y + 0.8) / (x + 0.5); print(quotient);  # 1.154 (parentheses)
+
+# 3. STRING OPERATIONS
+# string + string → string (concatenation)
+string str1 = "Hello"; print(str1);    # Hello
+string str2 = "World"; print(str2);    # World
+
+string result = str1 + str2; print(result);  # HelloWorld
+result = str1 + " " + str2; print(result);   # Hello World (reassignment)
+result = (str1 + "!") + (" " + str2); print(result);  # Hello! World (parentheses)
+
+# Other operations undefined:
+# string s1 = "Hello";
+# string s2 = "World";
+# s1 - s2  (undefined)
+# s1 * s2  (undefined)
+# s1 / s2  (undefined)
+
+# 4. MIXED TYPE OPERATIONS
+
+# 4.1 Integer and Float
+# int64 ⊕ float64 → float64
+int i = 12; print(i);    # 12
+float f = 14.5; print(f);    # 14.5
+
+float sum = i + f; print(sum);  # 26.5
+sum = (i * 2) + (f / 2); print(sum);  # 31.25 (parentheses)
+
+float difference = i - f; print(difference);  # -2.5
+difference = (i + 3) - (f - 1.5); print(difference);  # 2.0 (parentheses)
+
+float product = i * f; print(product);     # 174.0
+product = (i + 2) * (f - 4.5); print(product);  # 140.0 (parentheses)
+
+float quotient = i / f; print(quotient);    # 0.827586
+quotient = (i + 3) / (f - 4.5); print(quotient);  # 1.5 (parentheses)
+
+# float64 ⊕ int64 → float64
+float f2 = 14.5; print(f2);   # 14.5
+int i2 = 12; print(i2);   # 12
+
+float sum2 = f2 + i2; print(sum2);  # 26.5
+sum2 = (f2 * 2) + (i2 / 2); print(sum2);  # 35.0 (parentheses)
+
+float difference2 = f2 - i2; print(difference2);  # 2.5
+difference2 = (f2 + 0.5) - (i2 - 2); print(difference2);  # 5.0 (parentheses)
+
+float product2 = f2 * i2; print(product2);     # 174.0
+product2 = (f2 - 4.5) * (i2 + 3); print(product2);  # 150.0 (parentheses)
+
+float quotient2 = f2 / i2; print(quotient2);    # 1.208333
+quotient2 = (f2 + 0.5) / (i2 - 2); print(quotient2);  # 1.5 (parentheses)
+
+# 5. COMPLEX EXPRESSIONS
+int i3 = 12; print(i3);    # 12
+float f3 = 14.5; print(f3);    # 14.5
+string s3 = "result: "; print(s3);    # result:
+
+# Complex expression examples with reassignment and parentheses
+float expr1 = (i3 * f3) + (f3 / i3); print(expr1);          # 175.208333
+expr1 = ((i3 + 2) * (f3 - 4.5)) + ((f3 + 0.5) / (i3 - 2)); print(expr1);  # 141.5 (reassignment)
+
+string expr2 = s3 + (i3 + f3); print(expr2);          # result: 26.5
+expr2 = s3 + ((i3 * 2) + (f3 / 2)); print(expr2);    # result: 31.25 (reassignment)
+
+string expr3 = s3 + i3 + f3; print(expr3);          # result: 1214.5
+expr3 = s3 + (i3 + 3) + (f3 - 4.5); print(expr3);  # result: 1510.0 (reassignment)
+
+string expr4 = s3 + (i3 * f3); print(expr4);          # result: 174.0
+expr4 = s3 + ((i3 + 2) * (f3 - 4.5)); print(expr4);  # result: 140.0 (reassignment)
+
+float expr5 = i3 * f3 + i3 / f3; print(expr5);          # 174.827586
+expr5 = (i3 + 2) * (f3 - 4.5) + (i3 - 2) / (f3 + 0.5); print(expr5);  # 140.8 (reassignment)

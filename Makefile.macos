@@ -1,11 +1,10 @@
 # -------------------------
 # macOS Configuration
 # -------------------------
-CXXFLAGS := -std=c++20 -Wall -Wextra -pedantic -O2 -g -stdlib=libc++ -arch arm64
+CXXFLAGS := -Wall -Wextra -pedantic -O2 -g -arch arm64 -stdlib=libc++ -std=c++20
 CXX := clang++
-LLVM_CXXFLAGS := $(shell llvm-config --cxxflags)
+LLVM_CXXFLAGS := -I/opt/homebrew/Cellar/llvm@19/19.1.7/include
 LLVM_LDFLAGS := $(shell llvm-config --ldflags --system-libs --libs all)
-CXXFLAGS += $(LLVM_CXXFLAGS)
 
 SRC_DIR := src
 BUILD_DIR := build
@@ -27,11 +26,11 @@ all: $(OUTPUT_EXECUTABLE)
 
 $(OUTPUT_EXECUTABLE): $(OBJS_FILES)
 	@mkdir -p $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LLVM_LDFLAGS)
+	$(CXX) $(CXXFLAGS) $(LLVM_CXXFLAGS) -o $@ $^ $(LLVM_LDFLAGS)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(LLVM_CXXFLAGS) -c $< -o $@
 
 clean:
 	rm -rf $(BUILD_DIR)

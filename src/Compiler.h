@@ -2,7 +2,7 @@
    The compiler object is responsible for whole compilation process,
    from reading input source code, to generation of executable file.
 
-Copyright (C) 2025 Adam Byczyński.
+Copyright (C) 2026 Adam Byczyński.
 
 This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -23,9 +23,10 @@ This program is free software: you can redistribute it and/or modify
 #define THESIS_COMPILER_COMPILER_H
 
 
+#include <filesystem>
 #include <vector>
 
-#include "Utilities/Logger.h"
+#include "utilities/Logger.h"
 
 class Compiler {
 
@@ -46,11 +47,11 @@ private:
     std::string sourceFileName;
     std::string outputFileName;
 
-    bool flagInfo{};
-    bool flagVerbose{};
-    bool flagHelpInfo{};
-    bool flagLinking{};
-    bool flagDumpLogs{};
+    bool flagInfo{false};
+    bool flagVerbose{false};
+    bool flagHelpInfo{false};
+    bool flagLink{true};
+    bool flagDumpLogs{false};
 
     void parseCommandLineArguments();
     void printCompilationOptions();

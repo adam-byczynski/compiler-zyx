@@ -1,0 +1,1 @@
+[ERROR] [L:3, C:1]: Type mismatch: Cannot initialize variable "num" of type "int" with given expression.

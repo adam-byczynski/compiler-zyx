@@ -3,7 +3,7 @@
     The methods mainly refer to opening and analysis of source code in the compilation process.
 
 
-Copyright (C) 2025 Adam Byczyński.
+Copyright (C) 2026 Adam Byczyński.
 
 This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by

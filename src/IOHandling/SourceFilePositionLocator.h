@@ -1,7 +1,3 @@
-//
-// Created by self on 02/03/2025.
-//
-
 #ifndef SOURCEFILEPOSITIONLOCATOR_H
 #define SOURCEFILEPOSITIONLOCATOR_H
 

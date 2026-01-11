@@ -4,7 +4,7 @@
      - emission of final executable by linking .obj file using clang from path
 
 
-Copyright (C) 2025 Adam Byczyński.
+Copyright (C) 2026 Adam Byczyński.
 
 This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -104,7 +104,7 @@ void LLVM_ExecutableGenerator::emitLinkedExecutableFile(const std::string &exect
             "Could not link to executable. Expected " + exectuableFileName + "_obj file in the same directory.");
     }
 
-    std::string command = "clang " + exectuableFileName + "_obj -o " + exectuableFileName + "_exec";
+    std::string command = "clang " + exectuableFileName + "_obj -o " + exectuableFileName;
     int linkObjFileStatus = std::system(command.c_str());
 
     if (linkObjFileStatus != 0) {

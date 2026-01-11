@@ -1,3 +1,3 @@
 #!/bin/bash
 
-make all TARGET=zyx && ./build/zyx -s $1 -o $1 -d
+make all TARGET=zyx && ./build/zyx $1 -dvi

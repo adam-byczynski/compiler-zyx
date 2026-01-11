@@ -3,7 +3,7 @@
     from Abstract Syntax Tree created by Parser.
 
 
-Copyright (C) 2025 Adam Byczyński.
+Copyright (C) 2026 Adam Byczyński.
 
 This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -33,24 +33,24 @@ This program is free software: you can redistribute it and/or modify
 #include "llvm/MC/TargetRegistry.h"
 #include "llvm/Support/TargetSelect.h"
 
-#include "../Parser/Expressions/KeywordExpressions/BranchingIfExprAST.h"
-#include "../Parser/Expressions/KeywordExpressions/LoopWhileExprAST.h"
-#include "../Parser/Expressions/OperationExpressions/AssignmentExprAST.h"
-#include "../Parser/Expressions/OperationExpressions/BinaryOperatorExprAST.h"
-#include "../Parser/Expressions/OperationExpressions/DeclarationExprAST.h"
-#include "../Parser/Expressions/OperationExpressions/FunctionPrintValueExprAST.h"
-#include "../Parser/Expressions/ProgramExprAST.h"
-#include "../Parser/Expressions/UtilsExpressions/BlockExprAST.h"
-#include "../Parser/Expressions/ValueExpressions/BooleanValueExprAST.h"
-#include "../Parser/Expressions/ValueExpressions/FloatValueExprAST.h"
-#include "../Parser/Expressions/ValueExpressions/IntegerValueExprAST.h"
-#include "../Parser/Expressions/ValueExpressions/StringValueExprAST.h"
-#include "../Parser/Expressions/ValueExpressions/VariableReferenceExprAST.h"
+#include "../parser/expressions/keywordExpressions/BranchingIfExprAST.h"
+#include "../parser/expressions/keywordExpressions/LoopWhileExprAST.h"
+#include "../parser/expressions/operationExpressions/AssignmentExprAST.h"
+#include "../parser/expressions/operationExpressions/BinaryOperatorExprAST.h"
+#include "../parser/expressions/operationExpressions/DeclarationExprAST.h"
+#include "../parser/expressions/operationExpressions/FunctionPrintValueExprAST.h"
+#include "../parser/expressions/ProgramExprAST.h"
+#include "../parser/expressions/utilsExpressions/BlockExprAST.h"
+#include "../parser/expressions/valueExpressions/BooleanValueExprAST.h"
+#include "../parser/expressions/valueExpressions/FloatValueExprAST.h"
+#include "../parser/expressions/valueExpressions/IntegerValueExprAST.h"
+#include "../parser/expressions/valueExpressions/StringValueExprAST.h"
+#include "../parser/expressions/valueExpressions/VariableReferenceExprAST.h"
 
-#include "../BasicComponents/SymbolTable.h"
-#include "../BasicComponents/LanguageLiterals.h"
+#include "../basicComponents/SymbolTable.h"
+#include "../basicComponents/LanguageLiterals.h"
 
-#include "../Utilities/Logger.h"
+#include "../utilities/Logger.h"
 
 
 
@@ -90,7 +90,7 @@ private:
     void declareMainFunction();
     void terminateMainFunction();
 
-    // Utils functions
+    // utils functions
     std::string getPosition(const Token & token);
 
     llvm::Type* getLLVMTypeFromVariableType(VariableType type);
